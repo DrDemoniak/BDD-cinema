@@ -1,4 +1,3 @@
-<?php include 'templates/header.php'; ?>
 <?php
 require 'includes/fonctions.php';
 $seances = getToutesLesSeances();

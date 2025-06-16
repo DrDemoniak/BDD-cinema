@@ -1,6 +1,6 @@
 <?php
 // includes/config.php
-$host = '10.96.16.83';
+$host = '10.96.16.82';
 $db   = 'cinema';
 $user = 'colin';
 $pass = '';           // votre mot de passe MySQL
