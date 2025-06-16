@@ -1,20 +1,8 @@
-<?php
-require 'includes/fonctions.php';
-$seances = getToutesLesSeances();
-include 'templates/header.php';
-?>
+<?php include 'templates/header.php'; ?>
 
-<h2>Séances à venir</h2>
-<ul>
-<?php foreach ($seances as $s): ?>
-  <li>
-    <a href="seance.php?id=<?= $s['id'] ?>">
-      <?= htmlspecialchars($s['titre']) ?>
-      – <?= date('d/m/Y H:i', strtotime($s['horaires'])) ?>
-      (<?= htmlspecialchars($s['salle']) ?>)
-    </a>
-  </li>
-<?php endforeach; ?>
-</ul>
+<section>
+  <h2>Bienvenue au Cinéma</h2>
+  <p>Découvrez notre sélection, réservez vos places et vivez l’expérience grande écran !</p>
+</section>
 
 <?php include 'templates/footer.php'; ?>

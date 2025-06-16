@@ -1,28 +1,27 @@
 <?php
 require 'includes/fonctions.php';
-if (!isset($_GET['id'])) {
-  header('Location: index.php'); exit;
-}
-$seance = getSeanceById((int)$_GET['id']);
-if (!$seance) {
-  exit('Séance introuvable');
-}
+if (!isset($_GET['id'])) header('Location: films.php');
+$film = getFilmById((int)$_GET['id']);
+if (!$film) exit('Film introuvable');
 include 'templates/header.php';
 ?>
 
 <article>
-  <h2><?= htmlspecialchars($seance['titre']) ?></h2>
-  <p>Année : <?= $seance['annee'] ?></p>
-  <p>Quand : <?= date('d/m/Y H:i', strtotime($seance['horaires'])) ?></p>
-  <p>Salle : <?= htmlspecialchars($seance['salle']) ?></p>
+  <h2><?= htmlspecialchars($film['titre']) ?></h2>
+  <p>Genre : <?= htmlspecialchars($film['genre']) ?></p>
+  <p>Auteur : <?= htmlspecialchars($film['auteur']) ?></p>
+  <p>Séance : <?= date('d/m/Y H:i', strtotime($film['seance'])) ?></p>
+  <p>Places restantes : <?= $film['places_totales'] ?></p>
 
-  <h3>Réservation</h3>
+  <h3>Réserver</h3>
   <form action="reserve.php" method="post">
-    <input type="hidden" name="seance_id" value="<?= $seance['id'] ?>">
+    <input type="hidden" name="film_id" value="<?= $film['id'] ?>">
     <label>Nom : <input type="text" name="nom" required></label><br>
-    <label>Prénom : <input type="text" name="prenom" required></label><br>
-    <label>Email : <input type="email" name="mail" required></label><br>
-    <button type="submit">Envoyer</button>
+    <label>Email : <input type="email" name="email" required></label><br>
+    <label>Nombre de places :
+      <input type="number" name="places" min="1" max="<?= $film['places_totales'] ?>" required>
+    </label><br>
+    <button type="submit">Confirmer</button>
   </form>
 </article>
 

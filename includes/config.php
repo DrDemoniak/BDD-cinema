@@ -1,19 +1,19 @@
 <?php
-// includes/config.php
-$host = '10.96.16.82';
-$db   = 'cinema';
-$user = 'colin';
-$pass = '';           // votre mot de passe MySQL
-$charset = 'utf8mb4';
+// Connexion PDO
+$host   = '10.96.16.82';
+$port   = 3306;
+$db     = 'cinema';
+$user   = 'colin';
+$pass   = '';          // à adapter
+$charset= 'utf8mb4';
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$dsn = "mysql:host={$host};port={$port};dbname={$db};charset={$charset}";
 $options = [
-  PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
-
 try {
-  $pdo = new PDO($dsn, $user, $pass, $options);
+    $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-  exit("Erreur de connexion à la BDD : " . $e->getMessage());
+    exit("Erreur de connexion : " . $e->getMessage());
 }

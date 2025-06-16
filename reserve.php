@@ -1,25 +1,19 @@
-<?php include 'templates/header.php'; ?>
 <?php
 require 'includes/fonctions.php';
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  header('Location: index.php'); exit;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') header('Location: films.php');
+
+$filmId = (int)$_POST['film_id'];
+$nom    = trim($_POST['nom']);
+$email  = trim($_POST['email']);
+$places = (int)$_POST['places'];
+
+// validations simples
+if (!$nom || !filter_var($email, FILTER_VALIDATE_EMAIL) || $places < 1) {
+    exit('Données invalides');
 }
 
-$seance_id = (int)$_POST['seance_id'];
-$nom       = trim($_POST['nom']);
-$prenom    = trim($_POST['prenom']);
-$mail      = trim($_POST['mail']);
+$clientId = creerClient($nom, $email);
+reserver($filmId, $clientId, $places);
 
-if (!$nom || !$prenom || !filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-  exit('Données invalides');
-}
-
-// création utilisateur + inscription
-$user_id = creerUtilisateur($nom, $prenom, $mail);
-inscrireSeance($seance_id, $user_id);
-
-// redirection
 header('Location: merci.php');
-include 'templates/footer.php';
 exit;
-?>

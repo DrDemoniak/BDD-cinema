@@ -1,6 +1,6 @@
-</main>
+  </main>
   <footer>
-    <p>&copy; <?= date('Y') ?> Mon Cinéma – Tous droits réservés.</p>
+    <p>&copy; <?= date('Y') ?> Mon Cinéma</p>
   </footer>
 </body>
 </html>
