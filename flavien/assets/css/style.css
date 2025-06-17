@@ -1,0 +1,40 @@
+/* Style général */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+}
+
+.hero-section {
+    background-color: #343a40;
+    color: white;
+    padding: 3rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Cartes de films */
+.card {
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+}
+
+/* Navigation */
+.navbar {
+    margin-bottom: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 200px;
+    }
+}
