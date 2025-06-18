@@ -1,4 +1,4 @@
-<?php
+<?php session_start(); // Ajoutez cette ligne en tout premier
 require_once 'includes/config.php';
 
 if (!isset($_GET['id'])) {

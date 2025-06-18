@@ -1,4 +1,4 @@
-<?php
+<?php session_start(); // Ajoutez cette ligne en tout premier
 require_once 'includes/config.php';
 
 if (!isset($_GET['id_seance'])) {
@@ -29,9 +29,12 @@ include 'includes/header.php';
 
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ici, normalement vous auriez un système d'authentification
-    // Pour l'exemple, on utilise un utilisateur par défaut
-    $userId = 1; // À remplacer par $_SESSION['user_id'] en réel
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: connexion.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
+        exit;
+    }
+    
+    $userId = $_SESSION['user_id'];
     
     try {
         $db->beginTransaction();

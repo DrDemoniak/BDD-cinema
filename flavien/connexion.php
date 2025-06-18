@@ -12,25 +12,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     if (!empty($email) && !empty($password)) {
-        // Vérifier les identifiants
         $query = $db->prepare("SELECT * FROM utilisateur WHERE mail = ?");
         $query->execute([$email]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Authentification réussie
+    // Version temporaire sans hashage
+        if ($user && $password === $user['password']) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
-            
-            // Redirection vers la page précédente ou l'accueil
             header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php'));
             exit;
         } else {
             $error = "Email ou mot de passe incorrect";
-        }
-    } else {
-        $error = "Veuillez remplir tous les champs";
     }
+}
 }
 ?>
 
