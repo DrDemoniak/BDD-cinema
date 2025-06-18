@@ -2,6 +2,20 @@
 body {
     background-color: #f8f9fa;
     font-family: 'Arial', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container principal pour le contenu */
+.main-content {
+    flex: 1;
+}
+
+/* Footer sticky */
+footer {
+    margin-top: auto;
 }
 
 .hero-section {
@@ -31,11 +45,6 @@ body {
 .navbar {
     margin-bottom: 2rem;
 }
-
-footer {
-    margin-top: auto;
-}
-
 
 /* Responsive */
 @media (max-width: 768px) {
