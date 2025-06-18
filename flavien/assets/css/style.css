@@ -46,9 +46,30 @@ footer {
     margin-bottom: 2rem;
 }
 
+/* Style pour le filtre acteurs */
+.actor-filter {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+.actor-filter .form-check {
+    margin-bottom: 0.3rem;
+}
+
+/* Style pour les filtres actifs */
+.alert-info {
+    background-color: #e7f1ff;
+    border-color: #d6e4ff;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .card-img-top {
         height: 200px;
+    }
+    
+    .actor-filter {
+        max-height: 150px;
     }
 }
