@@ -16,14 +16,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query->execute([$email]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-    // Dans la partie vérification des identifiants
-    if ($user && password_verify($password, $user['password'])) {
-        // Authentification réussie
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
-    // ...
-}
-}
+        // Dans la partie vérification des identifiants
+        if ($user && password_verify($password, $user['password'])) {
+            // Authentification réussie
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
+            
+            // Redirection vers index.php au lieu de la même page
+            header("Location: index.php");
+            exit();
+        } else {
+            $error = "Email ou mot de passe incorrect.";
+        }
+    } else {
+        $error = "Veuillez remplir tous les champs.";
+    }
 }
 ?>
 
