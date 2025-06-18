@@ -33,8 +33,8 @@ footer {
     cursor: pointer;
 }
 .card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 .card-img-top {
     height: 300px;
@@ -61,6 +61,22 @@ footer {
 .alert-info {
     background-color: #e7f1ff;
     border-color: #d6e4ff;
+}
+
+/* Style pour la page acteur */
+.actor-photo {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.actor-link {
+    transition: all 0.3s;
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.actor-link:hover {
+    color: #0a58ca;
+    text-decoration: underline;
 }
 
 /* Responsive */

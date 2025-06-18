@@ -98,24 +98,41 @@ include 'includes/header.php';
     </div>
     <div class="col-md-8">
         <h1><?= htmlspecialchars($film['titre']) ?> <small class="text-muted">(<?= $film['annee'] ?>)</small></h1>
-        <p><strong>Réalisateur :</strong> <?= htmlspecialchars($film['realisateur_prenom']) ?> <?= htmlspecialchars($film['realisateur_nom']) ?></p>
+        <p><strong>Réalisateur :</strong> 
+            <a href="realisateur.php?id=<?= $film['id'] ?>" class="text-decoration-none">
+                <?= htmlspecialchars($film['realisateur_prenom']) ?> <?= htmlspecialchars($film['realisateur_nom']) ?>
+            </a>
+        </p>
         
         <div class="mt-4">
             <h3>Synopsis</h3>
-            <p class="lead"><?= nl2br(htmlspecialchars($film['description'])) ?></p>
+            <p class="lead"><?= nl2br(htmlspecialchars($film['description'] ?? 'Aucune description disponible')) ?></p>
         </div>
         
         <div class="mt-4">
-            <h3>Acteurs</h3>
-            <ul>
+            <h3>Acteurs principaux</h3>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
                 <?php foreach ($actors as $actor): ?>
-                <li>
-                    <a href="acteur.php?id=<?= $actor['id'] ?>">
-                        <?= htmlspecialchars($actor['prenom']) ?> <?= htmlspecialchars($actor['nom']) ?>
-                    </a>
-                </li>
+                <div class="col">
+                    <div class="card h-100 border-0">
+                        <a href="acteur.php?id=<?= $actor['id'] ?>" class="text-decoration-none text-dark">
+                            <div class="actor-photo-placeholder bg-light rounded" style="
+                                height: 120px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            ">
+                                <i class="fas fa-user fa-3x text-secondary"></i>
+                            </div>
+                            <div class="card-body p-2 text-center">
+                                <h6 class="card-title mb-0"><?= htmlspecialchars($actor['prenom']) ?></h6>
+                                <h6 class="card-title mb-0 fw-bold"><?= htmlspecialchars($actor['nom']) ?></h6>
+                            </div>
+                        </a>
+                    </div>
+                </div>
                 <?php endforeach; ?>
-            </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -125,30 +142,32 @@ include 'includes/header.php';
     <?php if (empty($sessions)): ?>
         <div class="alert alert-info">Aucune séance prévue pour le moment</div>
     <?php else: ?>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Heure</th>
-                    <th>Salle</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($sessions as $session): ?>
-                <tr>
-                    <td><?= date('d/m/Y', strtotime($session['horaires'])) ?></td>
-                    <td><?= date('H:i', strtotime($session['horaires'])) ?></td>
-                    <td><?= htmlspecialchars($session['salle']) ?></td>
-                    <td>
-                        <a href="reservation.php?id_seance=<?= $session['id'] ?>" class="btn btn-sm btn-success">
-                            Réserver
-                        </a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Salle</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($sessions as $session): ?>
+                    <tr>
+                        <td><?= date('d/m/Y', strtotime($session['horaires'])) ?></td>
+                        <td><?= date('H:i', strtotime($session['horaires'])) ?></td>
+                        <td><?= htmlspecialchars($session['salle']) ?></td>
+                        <td>
+                            <a href="reservation.php?id_seance=<?= $session['id'] ?>" class="btn btn-sm btn-success">
+                                Réserver
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     <?php endif; ?>
 </div>
 
@@ -164,7 +183,7 @@ include 'includes/header.php';
         </div>
     <?php endif; ?>
     
-    <!-- Formulaire de commentaire (visible seulement si connecté) -->
+    <!-- Formulaire de commentaire -->
     <?php if (isset($_SESSION['user_id'])): ?>
         <div class="card mb-4">
             <div class="card-header">
@@ -242,6 +261,13 @@ include 'includes/header.php';
     .rating label:hover,
     .rating label:hover ~ label {
         color: #ffc107;
+    }
+    .actor-photo-placeholder {
+        transition: all 0.3s ease;
+    }
+    .actor-photo-placeholder:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 </style>
 
