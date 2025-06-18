@@ -32,6 +32,11 @@ body {
     margin-bottom: 2rem;
 }
 
+footer {
+    margin-top: auto;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .card-img-top {
