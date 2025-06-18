@@ -11,7 +11,7 @@ $recentFilms = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="hero-section mb-5">
-    <h1>Bienvenue sur <?= SITE_NAME ?></h1>
+    <h1>Bienvenue sur <?= SITE_NAME ?><?php if (isset($_SESSION['user_name'])): ?>, <?= $_SESSION['user_name'] ?><?php endif; ?> !</h1>
     <p>Découvrez les derniers films à l'affiche</p>
 </div>
 
