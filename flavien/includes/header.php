@@ -10,14 +10,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/cinema/index.php"><?= SITE_NAME ?></a>
+            <a class="navbar-brand" href="/cinema/flavien/index.php"><?= SITE_NAME ?></a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="/cinema/index.php">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/cinema/catalogue.php">Films</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/cinema/seances.php">Séances</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cinema/flavien/index.php">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cinema/flavien/catalogue.php">Films</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cinema/flavien/seances.php">Séances</a></li>
                 </ul>
-                <form class="d-flex" action="/cinema/recherche.php" method="get">
+                <form class="d-flex" action="/cinema/flavien/recherche.php" method="get">
                     <input class="form-control me-2" type="search" name="q" placeholder="Rechercher...">
                     <button class="btn btn-outline-light" type="submit">🔍</button>
                 </form>

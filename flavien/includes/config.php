@@ -13,5 +13,5 @@ try {
 }
 
 // Constantes
-define('SITE_NAME', 'CinéNetflix');
+define('SITE_NAME', 'Cin&flix');
 ?>
