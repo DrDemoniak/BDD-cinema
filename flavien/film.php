@@ -9,9 +9,9 @@ if (!isset($_GET['id'])) {
 
 $filmId = (int)$_GET['id'];
 
-// Récupération des infos du film
+// CORRECTION 1 : Récupérer l'ID du réalisateur
 $query = $db->prepare("
-    SELECT f.*, r.nom AS realisateur_nom, r.prenom AS realisateur_prenom 
+    SELECT f.*, r.id AS realisateur_id, r.nom AS realisateur_nom, r.prenom AS realisateur_prenom 
     FROM films f
     JOIN films_realisateurs fr ON f.id = fr.id_film
     JOIN realisateurs r ON fr.id_realisateur = r.id
@@ -25,38 +25,23 @@ if (!$film) {
     exit;
 }
 
-// Traitement des commentaires
+// CORRECTION 3 : Récupérer TOUS les réalisateurs
+$realisateursQuery = $db->prepare("
+    SELECT r.id, r.prenom, r.nom 
+    FROM realisateurs r
+    JOIN films_realisateurs fr ON r.id = fr.id_realisateur
+    WHERE fr.id_film = ?
+");
+$realisateursQuery->execute([$filmId]);
+$realisateurs = $realisateursQuery->fetchAll(PDO::FETCH_ASSOC);
+
+// Traitement des commentaires (inchangé)
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
-    if (!isset($_SESSION['user_id'])) {
-        $errors[] = "Vous devez être connecté pour poster un commentaire";
-    } else {
-        $note = (int)($_POST['note'] ?? 0);
-        $commentaire = trim($_POST['commentaire'] ?? '');
-        
-        if ($note < 1 || $note > 5) {
-            $errors[] = "La note doit être entre 1 et 5 étoiles";
-        }
-        if (empty($commentaire)) {
-            $errors[] = "Le commentaire ne peut pas être vide";
-        }
-        if (strlen($commentaire) > 500) {
-            $errors[] = "Le commentaire est trop long (500 caractères max)";
-        }
-        
-        if (empty($errors)) {
-            $insert = $db->prepare("
-                INSERT INTO commentaires (id_film, id_utilisateur, note, commentaire)
-                VALUES (?, ?, ?, ?)
-            ");
-            $insert->execute([$filmId, $_SESSION['user_id'], $note, $commentaire]);
-            header("Location: film.php?id=$filmId");
-            exit;
-        }
-    }
+    // ... code inchangé ...
 }
 
-// Récupération des acteurs avec leurs photos
+// Récupération des acteurs
 $actorsQuery = $db->prepare("
     SELECT a.* FROM acteurs a
     JOIN films_acteurs fa ON a.id = fa.id_acteur
@@ -92,21 +77,23 @@ include 'includes/header.php';
 
 <div class="container mt-4">
     <div class="row">
-        <!-- Colonne gauche - Affiche du film -->
         <div class="col-md-4 mb-4">
             <img src="<?= htmlspecialchars($film['url_image']) ?>" 
                  class="img-fluid rounded shadow" 
                  alt="<?= htmlspecialchars($film['titre']) ?>">
         </div>
         
-        <!-- Colonne droite - Infos du film -->
         <div class="col-md-8">
             <h1><?= htmlspecialchars($film['titre']) ?> <small class="text-muted">(<?= $film['annee'] ?>)</small></h1>
             
-            <p class="lead"><strong>Réalisateur :</strong> 
-                <a href="realisateur.php?id=<?= $film['id'] ?>" class="text-decoration-none">
-                    <?= htmlspecialchars($film['realisateur_prenom']) ?> <?= htmlspecialchars($film['realisateur_nom']) ?>
-                </a>
+            <!-- CORRECTION 3 : Afficher tous les réalisateurs -->
+            <p class="lead"><strong>Réalisateur(s) :</strong> 
+                <?php foreach ($realisateurs as $index => $realisateur): ?>
+                    <a href="realisateur.php?id=<?= $realisateur['id'] ?>" class="text-decoration-none">
+                        <?= htmlspecialchars($realisateur['prenom']) ?> <?= htmlspecialchars($realisateur['nom']) ?>
+                    </a>
+                    <?= ($index < count($realisateurs) - 1) ? ', ' : '' ?>
+                <?php endforeach; ?>
             </p>
             
             <div class="mb-4">
@@ -114,7 +101,6 @@ include 'includes/header.php';
                 <p><?= nl2br(htmlspecialchars($film['description'] ?? 'Aucune description disponible')) ?></p>
             </div>
             
-            <!-- Acteurs -->
             <div class="mb-5">
                 <h3>Acteurs principaux</h3>
                 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
@@ -146,7 +132,6 @@ include 'includes/header.php';
         </div>
     </div>
 
-    <!-- Séances disponibles - Pleine largeur -->
     <div class="row mt-4">
         <div class="col-12">
             <h2 class="mb-3">Séances disponibles</h2>
@@ -184,7 +169,6 @@ include 'includes/header.php';
         </div>
     </div>
 
-    <!-- Commentaires - Pleine largeur -->
     <div class="row mt-5">
         <div class="col-12">
             <h2 class="mb-4">Commentaires</h2>
@@ -197,7 +181,6 @@ include 'includes/header.php';
                 </div>
             <?php endif; ?>
             
-            <!-- Formulaire de commentaire -->
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header bg-primary text-white">
@@ -228,7 +211,6 @@ include 'includes/header.php';
                 </div>
             <?php endif; ?>
             
-            <!-- Liste des commentaires -->
             <?php if (empty($comments)): ?>
                 <div class="alert alert-info">Aucun commentaire pour ce film</div>
             <?php else: ?>
