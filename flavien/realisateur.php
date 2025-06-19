@@ -12,7 +12,7 @@ $realisateurId = (int)$_GET['id'];
 
 // Récupérer les infos du réalisateur
 $realisateurQuery = $db->prepare("
-    SELECT * FROM realisateurs 
+    SELECT * FROM realisateurs
     WHERE id = ?
 ");
 $realisateurQuery->execute([$realisateurId]);
@@ -34,7 +34,7 @@ $filmsQuery->execute([$realisateurId]);
 $films = $filmsQuery->fetchAll(PDO::FETCH_ASSOC);
 
 // Construire le lien Wikipedia
-$wikipediaLink = "https://fr.wikipedia.org/wiki/" . 
+$wikipediaLink = "https://fr.wikipedia.org/wiki/" .
                  str_replace(' ', '_', $realisateur['prenom'] . '_' . $realisateur['nom']);
 
 $pageTitle = $realisateur['prenom'] . " " . $realisateur['nom'];
@@ -45,14 +45,14 @@ include 'includes/header.php';
     <!-- Colonne gauche - Photo et infos -->
     <div class="col-md-4">
         <?php if (!empty($realisateur['url_image_realisateur'])): ?>
-            <img src="<?= htmlspecialchars($realisateur['url_image_realisateur']) ?>" 
-                 class="img-fluid rounded mb-4" 
+            <img src="<?= htmlspecialchars($realisateur['url_image_realisateur']) ?>"
+                 class="img-fluid rounded mb-4"
                  alt="Photo de <?= htmlspecialchars($realisateur['prenom'] . ' ' . $realisateur['nom']) ?>"
                  style="width: 100%; max-height: 450px; object-fit: cover; border-radius: 8px;">
         <?php else: ?>
             <div class="director-photo mb-4" style="
-                width: 100%; 
-                height: 300px; 
+                width: 100%;
+                height: 300px;
                 background-color: #f0f0f0;
                 display: flex;
                 align-items: center;
@@ -62,22 +62,22 @@ include 'includes/header.php';
                 <i class="fas fa-user-tie" style="font-size: 100px; color: #666;"></i>
             </div>
         <?php endif; ?>
-        
+       
         <div class="card mb-4">
             <div class="card-header">Informations</div>
             <div class="card-body">
                 <h4 class="mb-3"><?= htmlspecialchars($realisateur['prenom']) ?> <?= htmlspecialchars($realisateur['nom']) ?></h4>
-                
+               
                 <p><strong>Date de naissance :</strong> <?= date('d/m/Y', strtotime($realisateur['date_naissance'])) ?></p>
                 <p><strong>Âge :</strong> <?= date_diff(date_create($realisateur['date_naissance']), date_create('today'))->y ?> ans</p>
-                
+               
                 <a href="<?= $wikipediaLink ?>" target="_blank" class="btn btn-outline-primary w-100 mt-3">
                     <i class="fas fa-external-link-alt"></i> Voir sur Wikipedia
                 </a>
             </div>
         </div>
     </div>
-    
+   
     <!-- Colonne droite - Biographie et filmographie -->
     <div class="col-md-8">
         <div class="card mb-4">
@@ -92,16 +92,16 @@ include 'includes/header.php';
                 </p>
             </div>
         </div>
-        
+       
         <h3 class="mb-4">Filmographie</h3>
-        
+       
         <?php if (!empty($films)): ?>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                 <?php foreach ($films as $film): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="<?= htmlspecialchars($film['url_image']) ?>" 
-                             class="card-img-top" 
+                        <img src="<?= htmlspecialchars($film['url_image']) ?>"
+                             class="card-img-top"
                              alt="<?= htmlspecialchars($film['titre']) ?>"
                              style="height: 200px; object-fit: cover;">
                         <div class="card-body">
