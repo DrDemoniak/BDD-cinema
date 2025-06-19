@@ -57,6 +57,12 @@ footer {
     margin-bottom: 0.3rem;
 }
 
+.realisateur-bio {
+    line-height: 1.6;
+    text-align: justify;
+    hyphens: auto;
+}
+
 /* Style pour les filtres actifs */
 .alert-info {
     background-color: #e7f1ff;
