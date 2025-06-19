@@ -218,7 +218,6 @@ include 'includes/header.php';
             <a href="connexion.php" class="alert-link">Connectez-vous</a> pour laisser un commentaire
         </div>
     <?php endif; ?>
-    
     <!-- Liste des commentaires -->
     <?php if (empty($comments)): ?>
         <div class="alert alert-info">Aucun commentaire pour ce film</div>
