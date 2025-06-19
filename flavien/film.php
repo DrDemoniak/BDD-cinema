@@ -77,13 +77,19 @@ $actors = $actorsQuery->fetchAll(PDO::FETCH_ASSOC);
 
 // Récupération des séances
 $sessionsQuery = $db->prepare("
-    SELECT s.*, l.salle FROM seances s
+    SELECT s.*, l.salle, 
+           EXISTS(
+               SELECT 1 FROM seances_utilisateurs 
+               WHERE id_seance = s.id AND id_utilisateur = ?
+           ) AS user_has_reserved
+    FROM seances s
     JOIN lieux l ON s.id_lieu = l.id
     WHERE s.id_film = ? AND s.horaires > NOW()
     ORDER BY s.horaires
 ");
-$sessionsQuery->execute([$filmId]);
-$sessions = $sessionsQuery->fetchAll(PDO::FETCH_ASSOC);
+$sessionsQuery->execute([$_SESSION['user_id'] ?? 0, $filmId]);
+$sessions = $sessionsQuery->fetchAll(PDO::FETCH_ASSOC);  // Récupération des résultats
+
 
 // Récupération des commentaires
 $commentsQuery = $db->prepare("
@@ -178,10 +184,23 @@ include 'includes/header.php';
                                 <td><?= date('H:i', strtotime($session['horaires'])) ?></td>
                                 <td><?= htmlspecialchars($session['salle']) ?></td>
                                 <td>
-                                    <a href="reservation.php?id_seance=<?= $session['id'] ?>"
-                                       class="btn btn-sm btn-success">
-                                        Réserver
-                                    </a>
+                                    <?php if (isset($_SESSION['user_id'])): ?>
+                                        <?php if ($session['user_has_reserved']): ?>
+                                            <button class="btn btn-sm btn-secondary" disabled>
+                                                <i class="fas fa-check-circle"></i> Réservé
+                                            </button>
+                                        <?php else: ?>
+                                            <a href="reservation.php?id_seance=<?= $session['id'] ?>" 
+                                            class="btn btn-sm btn-success">
+                                            <i class="fas fa-ticket-alt"></i> Réserver
+                                            </a>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <a href="connexion.php?redirect=<?= urlencode($_SERVER['REQUEST_URI'])?>" 
+                                        class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-sign-in-alt"></i> Connectez-vous
+                                        </a>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

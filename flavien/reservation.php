@@ -27,6 +27,21 @@ if (!$seance) {
 $pageTitle = "Réservation - " . $seance['titre'];
 include 'includes/header.php';
 
+// Vérification réservation existante
+$alreadyBooked = false;
+if (isset($_SESSION['user_id'])) {
+    $check = $db->prepare("SELECT COUNT(*) FROM seances_utilisateurs 
+                          WHERE id_seance = ? AND id_utilisateur = ?");
+    $check->execute([$seanceId, $_SESSION['user_id']]);
+    $alreadyBooked = $check->fetchColumn() > 0;
+}
+
+if ($alreadyBooked) {
+    $_SESSION['error'] = "Vous avez déjà réservé cette séance";
+    header("Location: film.php?id=" . $seance['id_film']);
+    exit;
+}
+
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) {
