@@ -43,22 +43,29 @@ include 'includes/header.php';
 
 <div class="row">
     <div class="col-md-4">
-        <!-- Placeholder pour la photo - à remplacer par un vrai système si disponible -->
-        <div class="actor-photo mb-4" style="
-            width: 100%; 
-            height: 300px; 
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-        ">
-            <i class="fas fa-user" style="font-size: 100px; color: #666;"></i>
-        </div>
+        <?php if (!empty($actor['url_photo_acteur'])): ?>
+            <img src="<?= htmlspecialchars($actor['url_photo_acteur']) ?>" 
+                 class="img-fluid rounded mb-4" 
+                 alt="Photo de <?= htmlspecialchars($actor['prenom'] . ' ' . htmlspecialchars($actor['nom'])) ?>"
+                 style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px;">
+        <?php else: ?>
+            <div class="actor-photo mb-4" style="
+                width: 100%; 
+                height: 300px; 
+                background-color: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+            ">
+                <i class="fas fa-user" style="font-size: 100px; color: #666;"></i>
+            </div>
+        <?php endif; ?>
         
         <div class="card mb-4">
             <div class="card-header">Informations</div>
             <div class="card-body">
+                <!-- ... reste du code inchangé ... -->
                 <p><strong>Date de naissance :</strong> <?= date('d/m/Y', strtotime($actor['date_naissance'])) ?></p>
                 <p><strong>Âge :</strong> <?= date_diff(date_create($actor['date_naissance']), date_create('today'))->y ?> ans</p>
                 
@@ -90,7 +97,7 @@ include 'includes/header.php';
                 <?php foreach ($films as $film): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="<?= $film['url_image'] ?>" class="card-img-top" alt="<?= $film['titre'] ?>" style="height: 200px; object-fit: cover;">
+                        <img src="<?= $film['url_image'] ?>" class="card-img-top" alt="<?= $film['titre'] ?>" style="height: 350px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title"><?= $film['titre'] ?></h5>
                             <p class="card-text"><?= $film['annee'] ?></p>
