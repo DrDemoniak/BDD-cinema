@@ -45,13 +45,14 @@ include 'includes/header.php';
     <div class="col-md-4">
         <?php if (!empty($actor['url_photo_acteur'])): ?>
             <img src="<?= htmlspecialchars($actor['url_photo_acteur']) ?>" 
-                 class="img-fluid rounded mb-4" 
+                 class="img-fluid rounded mb-4 w-100" 
                  alt="Photo de <?= htmlspecialchars($actor['prenom'] . ' ' . htmlspecialchars($actor['nom'])) ?>"
-                 style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px;">
+                 style="max-height: 450px; border-radius: 8px;">
         <?php else: ?>
             <div class="actor-photo mb-4" style="
                 width: 100%; 
-                height: 300px; 
+                max-height: 450px;
+                aspect-ratio: 2/3;
                 background-color: #f0f0f0;
                 display: flex;
                 align-items: center;
@@ -66,6 +67,7 @@ include 'includes/header.php';
             <div class="card-header">Informations</div>
             <div class="card-body">
                 <!-- ... reste du code inchangé ... -->
+                <h4 class="mb-3"><?= htmlspecialchars($actor['prenom']) ?> <?= htmlspecialchars($actor['nom']) ?></h4>
                 <p><strong>Date de naissance :</strong> <?= date('d/m/Y', strtotime($actor['date_naissance'])) ?></p>
                 <p><strong>Âge :</strong> <?= date_diff(date_create($actor['date_naissance']), date_create('today'))->y ?> ans</p>
                 

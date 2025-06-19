@@ -110,30 +110,35 @@ include 'includes/header.php';
         </div>
         
         <div class="mt-4">
-            <h3>Acteurs principaux</h3>
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-                <?php foreach ($actors as $actor): ?>
-                <div class="col">
-                    <div class="card h-100 border-0">
-                        <a href="acteur.php?id=<?= $actor['id'] ?>" class="text-decoration-none text-dark">
-                            <div class="actor-photo-placeholder bg-light rounded" style="
-                                height: 120px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                            ">
-                                <i class="fas fa-user fa-3x text-secondary"></i>
-                            </div>
-                            <div class="card-body p-2 text-center">
-                                <h6 class="card-title mb-0"><?= htmlspecialchars($actor['prenom']) ?></h6>
-                                <h6 class="card-title mb-0 fw-bold"><?= htmlspecialchars($actor['nom']) ?></h6>
-                            </div>
-                        </a>
+    <h3>Acteurs principaux</h3>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+        <?php foreach ($actors as $actor): ?>
+        <div class="col">
+            <div class="card h-100 border-0">
+                <a href="acteur.php?id=<?= $actor['id'] ?>" class="text-decoration-none text-dark">
+                    <?php if (!empty($actor['url_photo_acteur'])): ?>
+                        <img src="<?= htmlspecialchars($actor['url_photo_acteur']) ?>" 
+                             class="img-fluid rounded" 
+                             alt="<?= htmlspecialchars($actor['prenom'] . ' ' . $actor['nom']) ?>"
+                             style="width: 100%; height: 180px; object-fit: cover;">
+                    <?php else: ?>
+                        <div class="actor-photo-placeholder bg-light rounded" style="
+                            height: 180px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        ">
+                            <i class="fas fa-user fa-3x text-secondary"></i>
+                        </div>
+                    <?php endif; ?>
+                    <div class="card-body p-2 text-center">
+                        <h6 class="card-title mb-0"><?= htmlspecialchars($actor['prenom']) ?></h6>
+                        <h6 class="card-title mb-0 fw-bold"><?= htmlspecialchars($actor['nom']) ?></h6>
                     </div>
-                </div>
-                <?php endforeach; ?>
+                </a>
             </div>
         </div>
+        <?php endforeach; ?>
     </div>
 </div>
 
